@@ -11,40 +11,23 @@ Here are the data for the project:
 
 https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
-#1 Merges the training and the test sets to create one data set.
-#Read all the files
-features = read.table("features.txt")
-X_train = read.table("train/X_train.txt")
-X_test = read.table("test/X_test.txt")
-subject_train = read.table("train/subject_train.txt")
-subject_test = read.table("test/subject_test.txt")
-Y_train = read.table("train/Y_train.txt")
-Y_test = read.table("test/Y_test.txt")
+Steps are the following:
+1 Merges the training and the test sets to create one data set.
+Read all the files
+Combine data X_train and X_test
 
-data <- rbind(X_train,X_test)
+2 Extracts only the measurements on the mean and standard deviation for each measurement. 
+Set table headers using features
+Filter mean and standard deviation columns
 
-#2 Extracts only the measurements on the mean and standard deviation for each measurement. 
-#set table headers using features
-colnames(data) <- features[,2]
-#filter mean and standard deviation columns
-mean_and_std <- data[,grep("mean\\(\\)|std\\(\\)", names(data), value=TRUE)]
+3 Uses descriptive activity names to name the activities in the data set
+Combine labels Y_train and Y_test
+Clean up using gsub and tolower
 
-#3 Uses descriptive activity names to name the activities in the data set
-label <- rbind(Y_train,Y_test)
+4 Appropriately labels the data set with descriptive variable names. 
+Accomplish it with names() function
 
-activity <- read.table("activity_labels.txt")
-activity[, 2] <- gsub("_", " ", activity[, 2])
-activity[, 2] <- tolower(activity[, 2])
-activity_label <- activity[label[, 1], 2]
-label[, 1] <- activity_label
-subject <- rbind(subject_train,subject_test)
-
-#4 Appropriately labels the data set with descriptive variable names. 
-names(label) <- "activity"
-names(subject) <- "subject"
-data_set <- cbind(subject, label, mean_and_std)
-
-#5 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+5 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 subject_len <- length(table(subject)) # 30
 activity_len <- dim(activity)[1] # 6
 column_len <- dim(data_set)[2]
