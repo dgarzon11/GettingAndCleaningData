@@ -28,23 +28,6 @@ Clean up using gsub and tolower
 4 Appropriately labels the data set with descriptive variable names. 
 Accomplish it with names() function
 
-5 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-subject_len <- length(table(subject)) # 30
-activity_len <- dim(activity)[1] # 6
-column_len <- dim(data_set)[2]
-tidy <- matrix(NA, nrow=subject_len*activity_len, ncol=column_len) 
-tidy <- as.data.frame(tidy)
-colnames(tidy) <- colnames(data_set)
-row <- 1
-for(i in 1:subject_len) {
-  for(j in 1:activity_len) {
-    tidy[row, 1] <- sort(unique(subject)[, 1])[i]
-    tidy[row, 2] <- activity[j, 2]
-    bool1 <- i == data_set$subject
-    bool2 <- activity[j, 2] == data_set$activity
-    tidy[row, 3:column_len] <- colMeans(data_set[bool1&bool2, 3:column_len])
-    row <- row + 1
-  }
-}
-
-write.table(tidy, "tidy.txt",row.name=FALSE)
+5 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each Generate the tidy data set with the average of each measurement for each activity and each subject.
+Calculate the mean of each measurement with the corresponding combination.
+Write the file out
